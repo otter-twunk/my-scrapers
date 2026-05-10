@@ -1,0 +1,20 @@
+# MyMuscleVideo.com Stash scraper stub
+# Full implementation by Codex — see CODEX_PROMPT.md and PERPLEXITY_TO_CODEX_HANDOFF.md
+
+name: MyMuscleVideo
+
+sceneByURL:
+  - action: script
+    url:
+      - mymusclevideo.com/
+    script:
+      - python
+      - MyMuscleVideo.py
+      - sceneByURL
+
+sceneByName:
+  - action: script
+    script:
+      - python
+      - MyMuscleVideo.py
+      - sceneByName

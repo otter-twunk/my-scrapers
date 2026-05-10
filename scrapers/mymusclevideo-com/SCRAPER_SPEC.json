@@ -1,0 +1,99 @@
+{
+  "site_name": "MyMuscleVideo",
+  "site_url": "https://mymusclevideo.com/",
+  "folder_name": "mymusclevideo-com",
+  "platform": "custom tube (no Cloudflare, no JSON-LD, Open Graph + HTML parsing)",
+  "supported_hooks": [
+    "sceneByURL",
+    "sceneByName"
+  ],
+  "url_patterns": {
+    "scene": [
+      "https://mymusclevideo.com/{video_id}/{slug}/",
+      "https://www.mymusclevideo.com/{video_id}/{slug}/"
+    ],
+    "performer": [],
+    "search": [
+      "https://mymusclevideo.com/search/video/?s={query}"
+    ]
+  },
+  "metadata_mapping": {
+    "scene_title": "og:title meta tag",
+    "date": "og:video:release_date meta property (ISO-8601, split on T, take [0])",
+    "description": "og:description meta property",
+    "cover_image": "og:image meta property (300x226 JPG)",
+    "performers": "NOT AVAILABLE — uploader is a community user, not a performer",
+    "tags": "<a href='/video/tag/{tag}/'> anchor text; fallback: meta name=keywords",
+    "studio": "Constant 'MyMuscleVideo'"
+  },
+  "selectors_or_parsing_notes": {
+    "scene_title": [
+      "soup.find('meta', property='og:title')['content']",
+      "Fallback: soup.find('div', id='video').find('h1').get_text(strip=True)"
+    ],
+    "date": [
+      "soup.find('meta', property='og:video:release_date')['content'].split('T')[0]"
+    ],
+    "description": [
+      "soup.find('meta', property='og:description')['content']",
+      "Fallback: soup.find('meta', attrs={'name': 'description'})['content']"
+    ],
+    "cover_image": [
+      "soup.find('meta', property='og:image')['content']"
+    ],
+    "tags": [
+      "soup.find_all('a', href=re.compile(r'^/video/tag/')) — .get_text(strip=True)",
+      "Fallback: soup.find('meta', attrs={'name': 'keywords'})['content'].split(',')"
+    ],
+    "studio": [
+      "Constant: 'MyMuscleVideo'"
+    ],
+    "video_id": [
+      "re.search(r'mymusclevideo\\.com/(\\d+)/', url).group(1)"
+    ]
+  },
+  "search_strategy": {
+    "supported": true,
+    "url": "https://mymusclevideo.com/search/video/?s={query}",
+    "result_link_pattern": "re.findall(r'href=\"/(\\d+)/([^\"]+)/\"', html) — deduplicate by video_id",
+    "notes": "No auth or CF needed. Each scene appears twice in HTML; deduplicate by video_id. First result is usually best match."
+  },
+  "fragment_matching_strategy": {
+    "supported": false,
+    "notes": "No reliable URL reconstruction without live search."
+  },
+  "anti_bot_or_access_notes": [
+    "No Cloudflare challenge on any tested page.",
+    "Standard Firefox/Linux UA sufficient.",
+    "No age_verified cookie required.",
+    "No JSON-LD anywhere — parse OG meta + HTML DOM only.",
+    "Model pages at /models/ require login; individual model slugs not discoverable from scene pages."
+  ],
+  "known_limitations": [
+    "No performer metadata on scene pages.",
+    "The 'From:' uploader link (/users/{username}/) is a community account — do not use as performer.",
+    "Model pages are login-gated — performerByURL not implementable.",
+    "Date in visible HTML is relative ('5 years ago') — use og:video:release_date.",
+    "og:image thumbnail is 300x226px — no public full-res alternative.",
+    "sceneByFragment and sceneByQueryFragment not supported."
+  ],
+  "validation_examples": {
+    "scene_urls": [
+      "https://mymusclevideo.com/107027/sexy-guy-muscle/",
+      "https://mymusclevideo.com/115276/adam-riich/"
+    ],
+    "performer_urls": [],
+    "search_queries": [
+      "muscle worship",
+      "adam riich"
+    ],
+    "fragments": []
+  },
+  "sources": [
+    "https://mymusclevideo.com/107027/sexy-guy-muscle/",
+    "https://mymusclevideo.com/115276/adam-riich/",
+    "https://mymusclevideo.com/search/video/?s=muscle",
+    "https://github.com/stashapp/CommunityScrapers",
+    "https://github.com/stashapp/stash"
+  ]
+}
