@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Stash Scraper"
+  short_description: "Build Stash scrapers from repo research"
+  default_prompt: "Use $create-stash-scraper to turn repo research into a new Stash scraper."

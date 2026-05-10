@@ -9,8 +9,10 @@ If you are creating a new scraper, use these files in order:
 1. `START_HERE.md`
 2. `workflow/PERPLEXITY_RESEARCH_INPUT.md`
 3. `workflow/PERPLEXITY_GENERIC_REPO_BRIEF.md`
-4. Have Perplexity use the generic repo brief to choose `scrapers/<site-folder>/`, scaffold that folder, and populate it, especially `SCRAPER_SPEC.json`, `PERPLEXITY_TO_CODEX_HANDOFF.md`, and `CODEX_PROMPT.md`
-5. `workflow/NEW_SCRAPER_CHECKLIST.md`
+4. Have Perplexity apply the repo conventions, initiate the site research, choose `scrapers/<site-folder>/`, and draft the handoff structure, especially `SCRAPER_SPEC.json`, `PERPLEXITY_TO_CODEX_HANDOFF.md`, and `CODEX_PROMPT.md`
+5. Run `scripts/create_scraper_from_template.sh <site-folder>`
+   - or run `python3 scripts/create_scraper_from_spec.py /path/to/SCRAPER_SPEC.json` after Perplexity's research is already complete
+6. `workflow/NEW_SCRAPER_CHECKLIST.md`
 
 If you want Codex to build directly without a separate research pass, use:
 
@@ -42,8 +44,9 @@ Current scrapers:
 ### Recommended Flow
 
 1. Run the Perplexity research brief in `workflow/PERPLEXITY_RESEARCH_INPUT.md`.
-2. Have Perplexity apply the repo conventions, choose `scrapers/<site-folder>/`, and scaffold the folder.
-3. Have Perplexity fill in `SCRAPER_SPEC.json` and write folder-specific `PERPLEXITY_TO_CODEX_HANDOFF.md` and `CODEX_PROMPT.md`.
+2. Have Perplexity apply the repo conventions from `workflow/PERPLEXITY_GENERIC_REPO_BRIEF.md`, identify the site structure, choose the folder name, and fill in `SCRAPER_SPEC.json`, `PERPLEXITY_TO_CODEX_HANDOFF.md`, and `CODEX_PROMPT.md`.
+3. Run `scripts/create_scraper_from_template.sh <site-folder>`.
+   - or run `python3 scripts/create_scraper_from_spec.py /path/to/SCRAPER_SPEC.json` after the research is done
 4. Ask Codex to start from the files inside that scraper folder.
 5. Validate and publish with `workflow/NEW_SCRAPER_CHECKLIST.md`.
 
@@ -89,8 +92,10 @@ For any scraper in this repo:
 - `workflow/CODEX_PROMPT.md`: repo-level direct Codex prompt
 - `workflow/NEW_SCRAPER_CHECKLIST.md`: QA and publish checklist
 - `workflow/SIMPLE_CODEX_START.md`: minimal prompt to start Codex from a scraper folder
-- `scripts/create_scraper_from_template.sh`: optional local fallback for scaffolding
+- `scripts/create_scraper_from_template.sh`: scaffolds a new scraper folder
+- `scripts/create_scraper_from_spec.py`: scaffolds and renames a new scraper folder from completed research
 - `scripts/validate_scraper_repo.py`: checks folder structure and required files
+- `skills/create-stash-scraper/`: repo-local skill for turning research into a scraper
 
 ## Folder-Local Workflow Files
 
@@ -101,4 +106,4 @@ Each scraper folder can also include:
 - `CODEX_PROMPT.md`: site-specific direct Codex prompt
 - `TODO.md`: implementation progress checklist
 
-The recommended automated flow is to have Perplexity choose the scraper folder, scaffold it from repo conventions, populate `SCRAPER_SPEC.json`, and draft the folder-local workflow files before Codex starts implementation.
+The recommended automated flow is to have Perplexity initiate the research, choose the folder structure, populate `SCRAPER_SPEC.json`, and draft the folder-local workflow files before Codex starts implementation.

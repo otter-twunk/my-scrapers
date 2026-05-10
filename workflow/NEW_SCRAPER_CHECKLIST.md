@@ -4,6 +4,7 @@ Use this before publishing a new scraper to the repo.
 
 ## Research
 
+- Run `workflow/PERPLEXITY_RESEARCH_INPUT.md` first if the site has not been researched yet.
 - Confirm the target site URL and preferred folder name.
 - Confirm whether the site is custom, WordPress, or another common platform.
 - Identify scene page URLs and performer page URLs.
@@ -12,8 +13,10 @@ Use this before publishing a new scraper to the repo.
 
 ## Repo Setup
 
-- Create `scrapers/<site-folder>/` using repo conventions or `templates/site-template/`.
-- Confirm the chosen folder name is short, URL-safe, and site-specific.
+- Copy `templates/site-template/` into `scrapers/<site-folder>/`.
+- Or generate the folder directly from Perplexity's completed research with `python3 scripts/create_scraper_from_spec.py /path/to/SCRAPER_SPEC.json`.
+- Use `workflow/PERPLEXITY_GENERIC_REPO_BRIEF.md` when Perplexity is choosing the folder structure.
+- Rename the template files for the target scraper.
 - Fill in `SCRAPER_SPEC.json`.
 - Add or update `PERPLEXITY_TO_CODEX_HANDOFF.md` in the scraper folder.
 - Add or update `CODEX_PROMPT.md` in the scraper folder.
