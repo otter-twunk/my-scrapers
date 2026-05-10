@@ -1,0 +1,34 @@
+# GayPornTube scraper stub — implementation by Codex
+# See CODEX_PROMPT.md and SCRAPER_SPEC.json for full details
+
+name: GayPornTube
+
+sceneByURL:
+  - action: script
+    url:
+      - gayporntube.com/video/
+    script:
+      - python
+      - GayPornTube.py
+      - sceneByURL
+
+sceneByName:
+  action: script
+  script:
+    - python
+    - GayPornTube.py
+    - sceneByName
+
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - GayPornTube.py
+    - sceneByQueryFragment
+
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - GayPornTube.py
+    - sceneByFragment

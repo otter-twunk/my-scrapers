@@ -1,0 +1,101 @@
+{
+  "site_name": "GayPornTube",
+  "site_url": "https://www.gayporntube.com/",
+  "folder_name": "gayporntube-com",
+  "platform": "custom tube (no Cloudflare)",
+  "supported_hooks": [
+    "sceneByURL",
+    "sceneByName",
+    "sceneByQueryFragment",
+    "sceneByFragment"
+  ],
+  "url_patterns": {
+    "scene": [
+      "https://www.gayporntube.com/video/{id}/{slug}"
+    ],
+    "performer": [],
+    "search": [
+      "https://www.gayporntube.com/search/videos/?q={query}"
+    ]
+  },
+  "metadata_mapping": {
+    "scene_title": "JSON-LD VideoObject > name  (also og:title, also h1.title in HTML)",
+    "date": "JSON-LD VideoObject > uploadDate (ISO-8601, strip to YYYY-MM-DD)",
+    "description": "JSON-LD VideoObject > description  (WARNING: often just star-rating emoji, not a synopsis)",
+    "cover_image": "JSON-LD VideoObject > thumbnailUrl  (static.gayporntube.com CDN URL, string not array)",
+    "performers": "Not available — site has no model/performer pages; only uploader (/user/{name}) is present",
+    "tags": "CSS: div.video-info-tags > a  (anchor text, links to /search/videos/{tag}/)",
+    "categories": "CSS: div.video-info-categories > a  (anchor text, links to /channels/{id}/{slug}/page1.html)",
+    "studio": "Constant: 'GayPornTube'"
+  },
+  "selectors_or_parsing_notes": {
+    "scene_title": [
+      "Parse JSON-LD VideoObject: json_ld['name']",
+      "Fallback: og:title meta tag",
+      "Fallback: <h1 class=\"title\"> inner text"
+    ],
+    "date": [
+      "Parse JSON-LD VideoObject: json_ld['uploadDate']",
+      "Value format: '2026-05-10T21:54:10Z' — split on T and take date part"
+    ],
+    "description": [
+      "Parse JSON-LD VideoObject: json_ld['description']",
+      "WARNING: value is often '⭐⭐⭐⭐⭐' (star rating emoji) rather than a real synopsis",
+      "If description matches only whitespace/stars/emoji, return empty string"
+    ],
+    "cover_image": [
+      "Parse JSON-LD VideoObject: json_ld['thumbnailUrl']",
+      "Value is a plain string (not array): 'https://static.gayporntube.com/contents/videos_screenshots/{bucket}/{id}/preview.jpg?v=1'"
+    ],
+    "performers": [
+      "Not available — return empty list"
+    ],
+    "tags": [
+      "CSS selector: 'div.video-info-tags > a' — collect anchor text",
+      "URLs follow pattern: /search/videos/{tag}/"
+    ],
+    "categories": [
+      "CSS selector: 'div.video-info-categories > a' — collect anchor text (e.g. 'Ass Play', 'Muscle Boys')",
+      "These are the closest thing to sub-studio/channel tags on this site",
+      "Consider merging categories into the tags list for Stash"
+    ],
+    "studio": [
+      "Constant value: 'GayPornTube'"
+    ]
+  },
+  "search_strategy": {
+    "supported": true,
+    "endpoint": "https://www.gayporntube.com/search/videos/?q={query}",
+    "notes": "Search returns a standard HTML results page with no Cloudflare block. Video links follow href pattern: /video/{id}/{slug}. Use difflib SequenceMatcher or similar to pick the best title match from results.",
+    "result_link_pattern": "https://www.gayporntube.com/video/{id}/{slug}",
+    "result_link_selector": "a[href*='/video/'] with numeric ID segment"
+  },
+  "fragment_matching_strategy": {
+    "supported": true,
+    "notes": "Use scene title from fragment to build a search query. Confidence depends on title quality in the user's filename. Treat as best-effort."
+  },
+  "anti_bot_or_access_notes": [
+    "No Cloudflare protection detected on scene pages, search pages, or homepage.",
+    "Standard Firefox/Linux UA with Accept: text/html and Cookie: age_verified=1 is sufficient.",
+    "Python urllib and curl subprocess both work fine.",
+    "age_verified=1 cookie is required to bypass the age gate."
+  ],
+  "known_limitations": [
+    "No performer metadata — site is uploader-based. performerByURL is not supported.",
+    "description field in JSON-LD is often star-rating emoji only — sanitise before returning.",
+    "Tags are sparse: 0–2 per scene is typical.",
+    "Category links point to /channels/{id}/{slug}/ — useful as additional tags but not a clean studio field.",
+    "sceneByName confidence depends on title match quality; titles in filenames may not match site titles exactly."
+  ],
+  "test_urls": {
+    "scene": [
+      "https://www.gayporntube.com/video/2041527/ass-addiction",
+      "https://www.gayporntube.com/video/2041520/help-cumming-00",
+      "https://www.gayporntube.com/video/2041464/a-perfect-cock2"
+    ],
+    "search": [
+      "https://www.gayporntube.com/search/videos/?q=bareback",
+      "https://www.gayporntube.com/search/videos/?q=muscle"
+    ]
+  }
+}
