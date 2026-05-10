@@ -42,6 +42,12 @@ Stash scraper for [gayporntube.com](https://www.gayporntube.com/).
 - Category links (`/channels/`) are merged into the tags list for richer coverage.
 - Title matching for fragment modes is best-effort; results depend on filename quality.
 
+## Verified URLs
+
+- `https://www.gayporntube.com/video/2041527/ass-addiction`
+- `https://www.gayporntube.com/video/2041520/help-cumming-00`
+- `https://www.gayporntube.com/search/videos/?q=bareback`
+
 ## Implementation Notes
 
 - No Cloudflare protection — standard Firefox UA with `age_verified=1` cookie is sufficient.

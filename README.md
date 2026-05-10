@@ -39,6 +39,9 @@ Current scrapers:
 - `scrapers/justthegays-tv`
 - `scrapers/justthegays-com`
 - `scrapers/gay0day-com`
+- `scrapers/gayporntube-com`
+- `scrapers/mymusclevideo-com`
+- `scrapers/tnaflix-com`
 
 ## Workflow
 

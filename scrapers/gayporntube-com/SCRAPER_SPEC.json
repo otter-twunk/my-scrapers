@@ -87,6 +87,27 @@
     "Category links point to /channels/{id}/{slug}/ — useful as additional tags but not a clean studio field.",
     "sceneByName confidence depends on title match quality; titles in filenames may not match site titles exactly."
   ],
+  "validation_examples": {
+    "scene_urls": [
+      "https://www.gayporntube.com/video/2041527/ass-addiction",
+      "https://www.gayporntube.com/video/2041520/help-cumming-00",
+      "https://www.gayporntube.com/video/2041464/a-perfect-cock2"
+    ],
+    "performer_urls": [],
+    "search_queries": [
+      "bareback",
+      "muscle"
+    ],
+    "fragments": [
+      "Ass addiction",
+      "help_cumming_00.mp4"
+    ]
+  },
+  "sources": [
+    "Live scene HTML fetched from https://www.gayporntube.com/video/2041527/ass-addiction with age_verified=1 cookie",
+    "Live search HTML fetched from https://www.gayporntube.com/search/videos/?q=bareback with age_verified=1 cookie",
+    "Repository handoff notes in PERPLEXITY_TO_CODEX_HANDOFF.md and CODEX_PROMPT.md"
+  ],
   "test_urls": {
     "scene": [
       "https://www.gayporntube.com/video/2041527/ass-addiction",

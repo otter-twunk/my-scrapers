@@ -20,7 +20,7 @@ Stash scraper for [mymusclevideo.com](https://mymusclevideo.com/) — a custom m
 | Date | `og:video:release_date` meta property |
 | Description | `og:description` meta property |
 | Cover Image | `og:image` (300×226 JPG) |
-| Tags | `/video/tag/` anchor links on scene page |
+| Tags | `/video/tag/` anchor links on scene page, with `video:tag` / `keywords` fallback |
 | Studio | Constant: `MyMuscleVideo` |
 | Performers | ❌ Not available |
 
@@ -33,7 +33,7 @@ Stash scraper for [mymusclevideo.com](https://mymusclevideo.com/) — a custom m
 ## Usage
 
 - **Scene by URL**: paste a scene URL such as `https://mymusclevideo.com/107027/sexy-guy-muscle/`
-- **Scene by Name**: enter a title string — the scraper queries `/search/video/?s=` and returns matching candidates
+- **Scene by Name**: enter a title string — the scraper queries `/search/video/?s=` and returns matching candidates from the search results page
 
 ## Known Limitations
 
@@ -41,3 +41,4 @@ Stash scraper for [mymusclevideo.com](https://mymusclevideo.com/) — a custom m
 - **Low-resolution cover**: `og:image` is 300×226px — no full-res public alternative.
 - **Model pages are login-gated**: `performerByURL` is not implemented.
 - **Visible date is relative** (`"5 years ago"`): the scraper uses `og:video:release_date` for the real date.
+- **Search results can contain near-duplicates**: `sceneByName` deduplicates by video ID and returns search-page metadata, not a fully scraped scene payload.
