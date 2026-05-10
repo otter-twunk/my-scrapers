@@ -12,3 +12,5 @@ Start with:
 
 Then implement the scraper in that folder and validate it against `workflow/NEW_SCRAPER_CHECKLIST.md`.
 ```
+
+This assumes Perplexity has already chosen the folder name, structured the folder, and populated the handoff files.

@@ -35,10 +35,12 @@ Please do all of the following:
    - sceneByFragment
    - performerByURL
 7. Suggest a short URL-safe folder name for adding this scraper to the repo `otter-twunk/my-scrapers` under `scrapers/<folder-name>/`.
-8. Draft the full contents for `scrapers/<folder-name>/SCRAPER_SPEC.json` using a machine-friendly structure.
-9. Draft the full contents for these two files inside that folder:
+8. Apply the repo conventions from the generic brief and define the folder structure for `scrapers/<folder-name>/`.
+9. Draft the full contents for `scrapers/<folder-name>/SCRAPER_SPEC.json` using a machine-friendly structure.
+10. Draft the full contents for these two files inside that folder:
    - `scrapers/<folder-name>/PERPLEXITY_TO_CODEX_HANDOFF.md`
    - `scrapers/<folder-name>/CODEX_PROMPT.md`
+11. Make the output ready for Codex to start with a simple folder-based prompt, without additional restructuring work.
 
 Output format:
 - Short implementation summary
@@ -47,6 +49,7 @@ Output format:
 - Suggested selectors or parsing approach
 - Known limitations
 - Suggested folder name
+- Suggested folder contents
 - Full content for `SCRAPER_SPEC.json`
 - Full content for `PERPLEXITY_TO_CODEX_HANDOFF.md`
 - Full content for `CODEX_PROMPT.md`

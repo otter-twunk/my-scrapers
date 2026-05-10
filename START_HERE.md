@@ -5,8 +5,8 @@ This repo is set up for a repeatable Stash scraper workflow.
 ## Fastest Path
 
 1. Run the research prompt in `workflow/PERPLEXITY_RESEARCH_INPUT.md`.
-2. Run `scripts/create_scraper_from_template.sh <site-folder>`.
-3. Have Perplexity fill in the new folder, especially:
+2. Have Perplexity choose and scaffold `scrapers/<site-folder>/` using the repo conventions and generic brief.
+3. Have Perplexity fill in that folder, especially:
    - `SCRAPER_SPEC.json`
    - `PERPLEXITY_TO_CODEX_HANDOFF.md`
    - `CODEX_PROMPT.md`
@@ -35,11 +35,11 @@ Each scraper folder should contain:
 
 ## Starting Template
 
-Use:
+Perplexity or Codex can scaffold from:
 
 - `templates/site-template/`
 
-Copy it, rename the files, then implement the site-specific logic.
+The preferred flow is for Perplexity to apply that template logic and repo rules when creating the new scraper folder.
 
 ## Final Check
 

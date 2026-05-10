@@ -12,8 +12,8 @@ Use this before publishing a new scraper to the repo.
 
 ## Repo Setup
 
-- Copy `templates/site-template/` into `scrapers/<site-folder>/`.
-- Rename the template files for the target scraper.
+- Create `scrapers/<site-folder>/` using repo conventions or `templates/site-template/`.
+- Confirm the chosen folder name is short, URL-safe, and site-specific.
 - Fill in `SCRAPER_SPEC.json`.
 - Add or update `PERPLEXITY_TO_CODEX_HANDOFF.md` in the scraper folder.
 - Add or update `CODEX_PROMPT.md` in the scraper folder.
