@@ -1,0 +1,67 @@
+{
+  "site_name": "everydayporn.co",
+  "site_url": "https://www.everydayporn.co",
+  "folder_name": "everydayporn",
+  "platform": "KVS-like tube platform",
+  "supported_hooks": [
+    "sceneByURL",
+    "sceneByName"
+  ],
+  "url_patterns": {
+    "scene": [
+      "https://www.everydayporn.co/video/<id>/<slug>/"
+    ],
+    "performer": [],
+    "search": [
+      "https://www.everydayporn.co/latest-updates/"
+    ]
+  },
+  "metadata_mapping": {
+    "scene_title": "JSON-LD VideoObject.name OR og:title",
+    "date": "JSON-LD VideoObject.uploadDate OR meta[property='ya:ovs:upload_date']",
+    "description": "JSON-LD VideoObject.description OR og:description",
+    "cover_image": "JSON-LD VideoObject.thumbnailUrl OR og:image",
+    "performers": "Not present on sampled pages — parse a[href*='/models/'] if available",
+    "tags": "a[href*='/categories/']",
+    "studio": "Not confirmed on sampled pages"
+  },
+  "selectors_or_parsing_notes": {
+    "scene_title": ["JSON-LD VideoObject.name", "og:title", "h1"],
+    "date": ["JSON-LD VideoObject.uploadDate", "meta[property='ya:ovs:upload_date']"],
+    "description": ["JSON-LD VideoObject.description", "og:description"],
+    "cover_image": ["JSON-LD VideoObject.thumbnailUrl", "og:image"],
+    "performers": ["a[href*='/models/']"],
+    "tags": ["a[href*='/categories/']"],
+    "studio": ["a[href*='/sites/']"]},
+  "search_strategy": {
+    "supported": true,
+    "notes": "/latest-updates/ provides paginated listing; full search endpoint not confirmed."
+  },
+  "fragment_matching_strategy": {
+    "supported": false,
+    "notes": "No filename-match endpoint confirmed."
+  },
+  "anti_bot_or_access_notes": [
+    "No Cloudflare detected on tested pages.",
+    "Standard browser headers sufficient for public pages.",
+    "Use conservative request delays between pagination calls."
+  ],
+  "known_limitations": [
+    "Performer/model links not present on sampled scene pages.",
+    "Studio/source links not confirmed — may not be populated for all content.",
+    "Platform appears KVS-like but exact CMS unconfirmed — avoid hardcoding KVS-specific assumptions."
+  ],
+  "validation_examples": {
+    "scene_urls": [
+      "https://www.everydayporn.co/video/340577/teddy-torres-fucks-bbutcherboy-fan-club2/",
+      "https://www.everydayporn.co/video/326655/onlyfans-mr-slimkat-trufreak2k-aka-notapout-free-gay-porn2/"
+    ],
+    "performer_urls": [],
+    "search_queries": ["https://www.everydayporn.co/latest-updates/"],
+    "fragments": []
+  },
+  "sources": [
+    "https://www.everydayporn.co",
+    "Perplexity live site inspection May 2026"
+  ]
+}

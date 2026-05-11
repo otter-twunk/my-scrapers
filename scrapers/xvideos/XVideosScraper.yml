@@ -1,0 +1,11 @@
+name: XVideosScraper
+description: Stash scraper for https://www.xvideos.com
+version: 1.0
+exec:
+  - python3
+  - "{scraperDir}/XVideosScraper.py"
+interface: rawJson
+hooks:
+  - name: sceneByURL
+  - name: sceneByName
+  - name: performerByURL
