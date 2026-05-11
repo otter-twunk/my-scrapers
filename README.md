@@ -36,11 +36,17 @@ Each scraper folder should contain:
 
 Current scrapers:
 
+- `scrapers/boyfriendtv-com`
+- `scrapers/gayhardfuck-com`
+- `scrapers/gayfappy-com`
 - `scrapers/justthegays-tv`
 - `scrapers/justthegays-com`
 - `scrapers/gay0day-com`
 - `scrapers/gayporntube-com`
+- `scrapers/icegaytube-tv`
+- `scrapers/manporn-xxx`
 - `scrapers/mymusclevideo-com`
+- `scrapers/thegay-com`
 - `scrapers/tnaflix-com`
 - `scrapers/xhamster-com`
 

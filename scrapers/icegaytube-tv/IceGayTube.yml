@@ -10,15 +10,16 @@ sceneByURL:
       - sceneByURL
 
 sceneByName:
-  - action: script
-    script:
-      - python
-      - IceGayTube.py
-      - sceneByName
+  action: script
+  script:
+    - python
+    - IceGayTube.py
+    - sceneByName
 
 performerByURL:
   - action: script
     url:
+      - icegaytube.tv/pornstar/
       - icegaytube.tv/pornstars/
     script:
       - python

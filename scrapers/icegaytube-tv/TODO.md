@@ -2,42 +2,42 @@
 
 ## Pre-implementation (Codex first step)
 
-- [ ] Fetch a live scene page and confirm presence/absence of JSON-LD `VideoObject` block
-- [ ] Confirm date field format (ISO-8601 string vs relative 'X days ago' text)
-- [ ] Confirm performer link selector (`a[href*='/pornstars/']`) is present in scene page HTML
-- [ ] Confirm tag link selector (`a[href*='/category/']`) is present in scene page HTML
-- [ ] Confirm studio/channel selector (`a[href*='/channel/']`) or note if absent
-- [ ] Fetch a performer page and document available fields
+- [x] Fetch a live scene page and confirm presence/absence of JSON-LD `VideoObject` block
+- [x] Confirm date field format (relative `X years ago` text on sampled scene)
+- [x] Confirm performer link selector is present in scene page HTML (`/pornstar/` on live page)
+- [x] Confirm tag link selector (`a[href*='/category/']`) is present in scene page HTML
+- [x] Confirm studio/channel selector (`a[href*='/channel/']`) or note if absent
+- [x] Fetch a performer page and document available fields
 
 ## Implementation
 
-- [ ] Create `IceGayTube.py` based on justthegays-tv pattern
-- [ ] Create `IceGayTube.yml` with sceneByURL, sceneByName, and performerByURL hooks
-- [ ] Implement `sceneByURL` — fetch scene page, parse og:* tags + JSON-LD fallback
-- [ ] Implement `sceneByName` — fetch search results, return first matching scene URL
-- [ ] Implement `performerByURL` — fetch performer page, parse name, image, gender
-- [ ] Set `age_verified=1` cookie in all requests
-- [ ] Handle missing metadata fields gracefully
-- [ ] Handle relative date strings if needed (e.g. '3 days ago' → approximate YYYY-MM-DD)
+- [x] Create `IceGayTube.py` based on justthegays-tv pattern
+- [x] Create `IceGayTube.yml` with sceneByURL, sceneByName, and performerByURL hooks
+- [x] Implement `sceneByURL` — fetch scene page, parse live HTML metadata
+- [x] Implement `sceneByName` — fetch search results, return matching scene URLs
+- [x] Implement `performerByURL` — fetch performer page, parse name, gender, details
+- [x] Set `age_verified=1` cookie in all requests
+- [x] Handle missing metadata fields gracefully
+- [x] Handle relative date strings if needed (e.g. '3 days ago' → approximate YYYY-MM-DD)
 
 ## Validation
 
-- [ ] Test sceneByURL against `https://www.icegaytube.tv/movies/2493331/machine-fuck-him-danny-wolfe-maxence-angel`
-  - [ ] title: "Machine fuck Him - Danny Wolfe & Maxence angel"
-  - [ ] performers: Danny Wolfe, Maxence Angel
-  - [ ] image URL populated
-  - [ ] tags populated
-  - [ ] date populated
+- [x] Test sceneByURL against `https://www.icegaytube.tv/movies/2493331/machine-fuck-him-danny-wolfe-maxence-angel`
+  - [x] title: "Machine fuck Him - Danny Wolfe & Maxence angel"
+  - [x] performers: Danny Wolfe, Maxence Angel
+  - [x] image URL populated
+  - [x] tags populated
+  - [x] date populated
 - [ ] Test sceneByURL against `https://www.icegaytube.tv/movies/1116728/ultimate-str8-redneck-has-sex-with-chap-and-says-it-s-all-for-the-cash-data-max`
-- [ ] Test sceneByName with query `machine fuck him danny wolfe` — confirm first result is correct scene
-- [ ] Test performerByURL against a real performer slug from `/pornstars`
-  - [ ] Document what fields are available
+- [x] Test sceneByName with query `machine fuck him danny wolfe` — confirm first result is correct scene
+- [x] Test performerByURL against a real performer slug from `/pornstars`
+  - [x] Document what fields are available: name + gender + description, no image observed
 
 ## Repo
 
-- [ ] Write `README.md` for this scraper folder
-- [ ] Update root `README.md` to add `scrapers/icegaytube-tv` to current scrapers list
-- [ ] Run `scripts/validate_scraper_repo.py` if available
+- [x] Write `README.md` for this scraper folder
+- [x] Update root `README.md` to add `scrapers/icegaytube-tv` to current scrapers list
+- [x] Run `scripts/validate_scraper_repo.py`
 
 ## Known Unknowns (resolve during pre-implementation)
 
