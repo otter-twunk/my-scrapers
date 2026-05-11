@@ -45,9 +45,17 @@ def main() -> int:
         for name in missing:
             errors.append(f"{scraper_dir.name}: missing required file {name}")
 
-        files = [path for path in scraper_dir.iterdir() if path.is_file()]
-        yml_files = sorted(path.name for path in files if path.suffix == ".yml")
-        py_files = sorted(path.name for path in files if path.suffix == ".py")
+        yml_files: list[str] = []
+        py_files: list[str] = []
+        for path in scraper_dir.iterdir():
+            if not path.is_file():
+                continue
+            if path.suffix == ".yml":
+                yml_files.append(path.name)
+            elif path.suffix == ".py":
+                py_files.append(path.name)
+        yml_files.sort()
+        py_files.sort()
 
         if not yml_files:
             errors.append(f"{scraper_dir.name}: missing scraper .yml file")
