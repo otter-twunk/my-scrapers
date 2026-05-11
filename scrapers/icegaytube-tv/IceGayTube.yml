@@ -1,0 +1,26 @@
+name: IceGayTube
+
+sceneByURL:
+  - action: script
+    url:
+      - icegaytube.tv/movies/
+    script:
+      - python
+      - IceGayTube.py
+      - sceneByURL
+
+sceneByName:
+  - action: script
+    script:
+      - python
+      - IceGayTube.py
+      - sceneByName
+
+performerByURL:
+  - action: script
+    url:
+      - icegaytube.tv/pornstars/
+    script:
+      - python
+      - IceGayTube.py
+      - performerByURL

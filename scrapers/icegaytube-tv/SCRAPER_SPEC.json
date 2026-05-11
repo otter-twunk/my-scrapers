@@ -1,0 +1,104 @@
+{
+  "site_name": "IceGayTube",
+  "site_url": "https://www.icegaytube.tv/",
+  "folder_name": "icegaytube-tv",
+  "platform": "custom tube (no Cloudflare detected)",
+  "supported_hooks": [
+    "sceneByURL",
+    "sceneByName",
+    "performerByURL"
+  ],
+  "url_patterns": {
+    "scene": [
+      "https://www.icegaytube.tv/movies/{id}/{slug}"
+    ],
+    "performer": [
+      "https://www.icegaytube.tv/pornstars/{slug}"
+    ],
+    "search": [
+      "https://www.icegaytube.tv/search/scenes?q={query}"
+    ]
+  },
+  "metadata_mapping": {
+    "scene_title": "og:title meta tag (strip ' at Ice Gay Tube' suffix) OR JSON-LD VideoObject > name if present",
+    "date": "JSON-LD VideoObject > uploadDate if present; fallback: meta[name='date'] or visible date text near video",
+    "description": "og:description meta tag OR JSON-LD VideoObject > description",
+    "cover_image": "og:image meta tag OR JSON-LD VideoObject > thumbnailUrl[0]",
+    "performers": "Anchor links on scene page matching href pattern /pornstars/{slug} — extract text; also present in page title for some scenes",
+    "tags": "Anchor links on scene page matching href pattern /category/{slug} or /search/{tag} — extract text",
+    "studio": "Anchor or text matching studio/channel section on scene page; fallback constant 'IceGayTube'"
+  },
+  "selectors_or_parsing_notes": {
+    "scene_title": [
+      "meta[property='og:title'] — strip ' at Ice Gay Tube' suffix",
+      "Fallback: JSON-LD VideoObject['name']",
+      "Fallback: <title> tag, strip ' at Ice Gay Tube'"
+    ],
+    "date": [
+      "JSON-LD VideoObject['uploadDate'] if available (ISO-8601, strip to YYYY-MM-DD)",
+      "Fallback: meta[name='date'] or meta[property='article:published_time']",
+      "Fallback: text element near 'Added' or 'Published' label in page HTML"
+    ],
+    "description": [
+      "meta[property='og:description']",
+      "Fallback: JSON-LD VideoObject['description']"
+    ],
+    "cover_image": [
+      "meta[property='og:image'] — full URL",
+      "Fallback: JSON-LD VideoObject['thumbnailUrl'][0]"
+    ],
+    "performers": [
+      "CSS: a[href*='/pornstars/'] — anchor text gives performer name",
+      "May also appear in og:title for some scene title formats"
+    ],
+    "tags": [
+      "CSS: a[href*='/category/'] or a[href*='/search/'] in tag block — anchor text",
+      "JSON-LD VideoObject['keywords'] if present"
+    ],
+    "studio": [
+      "CSS: a[href*='/channel/'] or a[href*='/channels/'] anchor text",
+      "Fallback constant: 'IceGayTube'"
+    ]
+  },
+  "search_strategy": {
+    "supported": true,
+    "notes": "Search endpoint https://www.icegaytube.tv/search/scenes?q={query} appears accessible. No Cloudflare challenge detected on public pages. sceneByName should be implementable by fetching search results and parsing scene links + og:title from each result card."
+  },
+  "fragment_matching_strategy": {
+    "supported": false,
+    "notes": "sceneByFragment and sceneByQueryFragment depend on reliable title-based search and are lower priority. Recommend implementing sceneByName first and extending later if search quality is sufficient."
+  },
+  "anti_bot_or_access_notes": [
+    "No Cloudflare Managed Challenge detected on public pages during research.",
+    "Age gate may exist — set 'age_verified=1' or equivalent cookie defensively in all requests.",
+    "Use a realistic Firefox/Linux User-Agent and standard Accept/Accept-Language headers.",
+    "If search or scene pages start returning redirect or empty responses, add a cookie fallback."
+  ],
+  "known_limitations": [
+    "JSON-LD VideoObject presence is inferred from site type — confirm on a live scene page before relying on it; og:* tags are the safer primary source.",
+    "Date field may not always be present in machine-readable form — may require text parsing of a 'Added X days ago' or absolute date string.",
+    "Studio/channel may not be present on all scenes — use constant fallback.",
+    "Performer name list may be incomplete for amateur/user-uploaded content with no tagged performers."
+  ],
+  "validation_examples": {
+    "scene_urls": [
+      "https://www.icegaytube.tv/movies/2493331/machine-fuck-him-danny-wolfe-maxence-angel",
+      "https://www.icegaytube.tv/movies/1116728/ultimate-str8-redneck-has-sex-with-chap-and-says-it-s-all-for-the-cash-data-max"
+    ],
+    "performer_urls": [
+      "https://www.icegaytube.tv/pornstars"
+    ],
+    "search_queries": [
+      "https://www.icegaytube.tv/search/scenes?q=danny+wolfe"
+    ],
+    "fragments": []
+  },
+  "sources": [
+    "https://www.icegaytube.tv/movies/2493331/machine-fuck-him-danny-wolfe-maxence-angel",
+    "https://www.icegaytube.tv/movies/1116728/ultimate-str8-redneck-has-sex-with-chap-and-says-it-s-all-for-the-cash-data-max",
+    "https://www.icegaytube.tv/pornstars",
+    "https://www.icegaytube.tv/search/scenes",
+    "https://github.com/stashapp/CommunityScrapers",
+    "https://github.com/stashapp/stash"
+  ]
+}
