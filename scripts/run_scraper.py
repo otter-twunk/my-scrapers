@@ -41,7 +41,7 @@ def find_scraper_script(site: str) -> Path:
     return scripts[0]
 
 
-def scraper_interface(script_path: Path) -> str:
+def scraper_interface_hint(script_path: Path) -> str:
     source = script_path.read_text(encoding="utf-8", errors="ignore")
     return "argv" if "sys.argv[1]" in source else "stdin"
 
@@ -90,6 +90,16 @@ def run_scraper(script_path: Path, interface: str, mode: str, payload: dict[str,
     )
 
 
+def run_with_fallback(script_path: Path, mode: str, payload: dict[str, Any]) -> subprocess.CompletedProcess[str]:
+    first = scraper_interface_hint(script_path)
+    second = "stdin" if first == "argv" else "argv"
+
+    primary = run_scraper(script_path, first, mode, payload)
+    if primary.returncode == 0:
+        return primary
+    return run_scraper(script_path, second, mode, payload)
+
+
 def print_error(message: str, *, returncode: int = 1) -> int:
     json.dump({"results": [], "error": message}, sys.stdout, ensure_ascii=False)
     sys.stdout.write("\n")
@@ -105,8 +115,7 @@ def main() -> int:
     except Exception as exc:
         return print_error(str(exc))
 
-    interface = scraper_interface(script_path)
-    completed = run_scraper(script_path, interface, args.mode, payload)
+    completed = run_with_fallback(script_path, args.mode, payload)
 
     if completed.returncode != 0:
         stderr = (completed.stderr or "").strip() or "Scraper process failed"

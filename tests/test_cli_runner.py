@@ -18,6 +18,18 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def first_site_for_interface(interface: str) -> str:
+    for folder in sorted(path for path in SCRAPERS_DIR.iterdir() if path.is_dir()):
+        scripts = sorted(path for path in folder.glob("*.py") if "_vendor" not in path.parts)
+        if not scripts:
+            continue
+        source = scripts[0].read_text(encoding="utf-8", errors="ignore")
+        detected = "argv" if "sys.argv[1]" in source else "stdin"
+        if detected == interface:
+            return folder.name
+    raise AssertionError(f"No scraper found for interface: {interface}")
+
+
 def test_unknown_site_returns_structured_error() -> None:
     result = run_cli("--site", "missing-site", "--mode", "sceneByName")
     assert result.returncode != 0
@@ -27,14 +39,16 @@ def test_unknown_site_returns_structured_error() -> None:
 
 
 def test_runner_normalizes_argv_scraper_output() -> None:
-    result = run_cli("--site", "xvideos", "--mode", "unsupportedMode")
+    site = first_site_for_interface("argv")
+    result = run_cli("--site", site, "--mode", "unsupportedMode")
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload == {"results": []}
 
 
 def test_runner_normalizes_stdin_scraper_output() -> None:
-    result = run_cli("--site", "allboner", "--mode", "unsupportedMode")
+    site = first_site_for_interface("stdin")
+    result = run_cli("--site", site, "--mode", "unsupportedMode")
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload == {"results": []}
