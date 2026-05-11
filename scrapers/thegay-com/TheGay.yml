@@ -1,0 +1,10 @@
+name: TheGay.com
+
+sceneByURL:
+  - action: script
+    url:
+      - thegay.com/video/
+    script:
+      - python
+      - TheGay.py
+      - sceneByURL

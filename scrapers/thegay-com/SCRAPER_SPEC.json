@@ -1,0 +1,114 @@
+{
+  "site_name": "TheGay.com",
+  "site_url": "https://www.thegay.com/",
+  "folder_name": "thegay-com",
+  "platform": "TXXX network (custom Vue SPA — same codebase as HClips, HDZog, HotMovs, Upornia, TXXX)",
+  "supported_hooks": [
+    "sceneByURL"
+  ],
+  "unsupported_hooks": [
+    "sceneByName",
+    "sceneByQueryFragment",
+    "sceneByFragment",
+    "performerByURL"
+  ],
+  "url_patterns": {
+    "scene": [
+      "https://www.thegay.com/video/{id}/{slug}/"
+    ],
+    "performer": [
+      "https://www.thegay.com/pornstar/{slug}/  -- NOT scrapeable headlessly (SPA, no SSR metadata)"
+    ],
+    "search": [
+      "https://www.thegay.com/search/{query}/  -- SPA route only, no usable server-rendered data"
+    ]
+  },
+  "platform_notes": {
+    "rendering": "Pure Vue SPA. The server returns an empty HTML shell for every route — <title> is blank, no og: meta tags, no JSON-LD. All page data is injected by JS after load.",
+    "canonical_pattern": "The <link rel=canonical> in the shell uses the path /api/v2/videos/{id}/ — this is a Vue router path, NOT a REST endpoint. Requesting it directly returns the same empty HTML shell.",
+    "known_api": "The TXXX network exposes an internal JSON API used by the Vue app. Based on the window.EoCR4 CDN map embedded in the page shell, video data routes through CDN hostnames like pv1.thegay.com/c1/videos and pv3.thegay.com/c3/videos. The primary internal API endpoint pattern (observed across the TXXX network) is: GET /api/json/video/{id} with a Referer header set to the video page URL.",
+    "id_extraction": "The video ID is the first numeric segment in the URL path: /video/{id}/{slug}/ — e.g. /video/748987/bareback-gay-sex-with-jerk/ gives id=748987.",
+    "age_gate": "An age_verified=1 cookie is required. Without it the server may redirect to an age-gate page.",
+    "anti_bot": "No Cloudflare. A realistic Firefox UA + Accept headers + age_verified=1 cookie is sufficient to fetch the HTML shell. However, the shell contains no metadata — the API call is required."
+  },
+  "api_strategy": {
+    "primary": "GET https://www.thegay.com/api/json/video/{id} with headers: User-Agent (Firefox), Referer: https://www.thegay.com/video/{id}/{slug}/, Cookie: age_verified=1, Accept: application/json",
+    "fallback": "If the primary endpoint returns non-JSON or an error, try GET https://www.thegay.com/api/v2/video/{id} with the same headers. Codex should verify the correct endpoint against a live video page using browser DevTools network inspection before finalising.",
+    "id_from_url": "re.search(r'/video/(\\d+)/', url).group(1)"
+  },
+  "metadata_mapping": {
+    "scene_title": "API response: data.title or data.name",
+    "date": "API response: data.post_date or data.added (ISO-8601, strip to YYYY-MM-DD)",
+    "description": "API response: data.description or data.text (may be tag list, not prose)",
+    "cover_image": "API response: data.thumbs[0].src or data.thumb_url or data.preview_url",
+    "performers": "API response: data.models[] -> each item has .title and .url",
+    "tags": "API response: data.categories[] or data.tags[] -> each item has .title",
+    "studio": "Constant 'TheGay.com' (no per-channel metadata in API)"
+  },
+  "selectors_or_parsing_notes": {
+    "scene_title": [
+      "API JSON: response['title'] or response['name']",
+      "Fallback (HTML shell): no og:title present — do not rely on HTML"
+    ],
+    "date": [
+      "API JSON: response['post_date'] or response['added']",
+      "Strip to YYYY-MM-DD using split('T')[0] or datetime.fromisoformat()"
+    ],
+    "description": [
+      "API JSON: response['description'] or response['text']",
+      "May be a comma-separated tag list rather than a narrative synopsis on user-uploaded clips"
+    ],
+    "cover_image": [
+      "API JSON: response['thumbs'][0]['src'] if present",
+      "Fallback: response['thumb_url'] or response['preview_url']"
+    ],
+    "performers": [
+      "API JSON: response['models'] — list of objects with 'title' (name) and 'url'",
+      "Extract name from each model object"
+    ],
+    "tags": [
+      "API JSON: response['categories'] or response['tags'] — list of objects with 'title'",
+      "Extract title string from each item"
+    ],
+    "studio": [
+      "Hard-code to 'TheGay.com' — no per-scene studio field in API"
+    ]
+  },
+  "search_strategy": {
+    "supported": false,
+    "notes": "All search routes are Vue SPA paths. The server returns an empty HTML shell — there is no server-rendered list of results to parse. sceneByName, sceneByQueryFragment, and sceneByFragment are not feasible without a JS-capable headless browser, which would introduce heavy dependencies. Recommend leaving these unsupported until a lightweight workaround is found."
+  },
+  "fragment_matching_strategy": {
+    "supported": false,
+    "notes": "Depends on search, which is not accessible to script scrapers. Not practical."
+  },
+  "anti_bot_or_access_notes": [
+    "No Cloudflare protection detected on the site.",
+    "Age gate cookie required: set Cookie: age_verified=1 on all requests.",
+    "A realistic Firefox/Linux UA and Accept/Accept-Language headers are sufficient.",
+    "The HTML shell returned for all routes contains no useful metadata — all data comes from the internal JSON API.",
+    "The video ID is always present in the URL path and must be extracted to call the API."
+  ],
+  "known_limitations": [
+    "sceneByName, sceneByQueryFragment, and sceneByFragment are not supported — search routes return empty SPA shells.",
+    "performerByURL is not supported — performer pages are SPA routes with no server-rendered data.",
+    "The exact internal API endpoint path must be verified by Codex against a live request (browser DevTools) before implementation, as TXXX network endpoints may vary slightly per site.",
+    "The description field may contain a tag list rather than a prose synopsis on user-uploaded clips.",
+    "Studio is always hard-coded to 'TheGay.com' — no per-scene channel/studio field available.",
+    "Thumbnail CDN URL structure includes a date-path segment that is not reconstructable without the API response."
+  ],
+  "validation_examples": {
+    "scene_urls": [
+      "https://www.thegay.com/video/748987/bareback-gay-sex-with-jerk/"
+    ],
+    "performer_urls": [],
+    "search_queries": [],
+    "fragments": []
+  },
+  "sources": [
+    "https://www.thegay.com/",
+    "https://www.thegay.com/video/748987/bareback-gay-sex-with-jerk/",
+    "https://github.com/stashapp/CommunityScrapers",
+    "https://github.com/stashapp/stash"
+  ]
+}
