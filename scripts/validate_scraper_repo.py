@@ -45,10 +45,31 @@ def main() -> int:
         for name in missing:
             errors.append(f"{scraper_dir.name}: missing required file {name}")
 
-        if not any(path.suffix == ".yml" for path in scraper_dir.iterdir() if path.is_file()):
+        yml_files: list[str] = []
+        py_files: list[str] = []
+        for path in scraper_dir.iterdir():
+            if not path.is_file():
+                continue
+            if path.suffix == ".yml":
+                yml_files.append(path.name)
+            elif path.suffix == ".py":
+                py_files.append(path.name)
+        yml_files.sort()
+        py_files.sort()
+
+        if not yml_files:
             errors.append(f"{scraper_dir.name}: missing scraper .yml file")
-        if not any(path.suffix == ".py" for path in scraper_dir.iterdir() if path.is_file()):
+        elif len(yml_files) > 1:
+            errors.append(
+                f"{scraper_dir.name}: expected exactly one scraper .yml file, found {len(yml_files)}"
+            )
+
+        if not py_files:
             errors.append(f"{scraper_dir.name}: missing scraper .py file")
+        elif len(py_files) > 1:
+            errors.append(
+                f"{scraper_dir.name}: expected exactly one scraper .py file, found {len(py_files)}"
+            )
 
         spec_path = scraper_dir / "SCRAPER_SPEC.json"
         if spec_path.exists():

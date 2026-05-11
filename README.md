@@ -89,8 +89,12 @@ Current scrapers:
 
 For any scraper in this repo:
 
-1. Copy that scraper's `.yml` and script file into your Stash `scrapers` directory.
-2. Reload scrapers in Stash or restart the app.
+1. Run `python3 scripts/export_stash_sync.py`.
+2. Copy files from `build/stash-sync/` into your Stash `scrapers` directory.
+   - Each scraper is exported to `build/stash-sync/<site-folder>/`.
+   - `build/stash-sync/manifest.json` shows exactly what was exported.
+3. Do not edit files in `build/stash-sync/` manually; update `scrapers/<site-folder>/` instead.
+4. Reload scrapers in Stash or restart the app.
 
 ## Conventions
 
@@ -113,6 +117,7 @@ For any scraper in this repo:
 - `scripts/create_scraper_from_template.sh`: scaffolds a new scraper folder
 - `scripts/create_scraper_from_spec.py`: scaffolds and renames a new scraper folder from completed research
 - `scripts/validate_scraper_repo.py`: checks folder structure and required files
+- `scripts/export_stash_sync.py`: validates and rebuilds `build/stash-sync/` from scraper source folders
 - `skills/create-stash-scraper/`: repo-local skill for turning research into a scraper
 
 ## Folder-Local Workflow Files

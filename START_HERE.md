@@ -49,3 +49,4 @@ Before publishing, run through:
 
 - `workflow/NEW_SCRAPER_CHECKLIST.md`
 - `python3 scripts/validate_scraper_repo.py`
+- `python3 scripts/export_stash_sync.py`
