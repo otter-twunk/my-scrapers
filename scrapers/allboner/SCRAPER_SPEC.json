@@ -1,0 +1,68 @@
+{
+  "site_name": "allboner.com",
+  "site_url": "https://www.allboner.com",
+  "folder_name": "allboner",
+  "platform": "KVS (Kernel Video Sharing)",
+  "supported_hooks": [
+    "sceneByURL",
+    "sceneByName"
+  ],
+  "url_patterns": {
+    "scene": [
+      "https://www.allboner.com/videos/<id>/<slug>/"
+    ],
+    "performer": [],
+    "search": [
+      "https://www.allboner.com/search/<query>/"
+    ]
+  },
+  "metadata_mapping": {
+    "scene_title": "og:title",
+    "date": "meta property='ya:ovs:upload_date'",
+    "description": "og:description",
+    "cover_image": "og:image",
+    "performers": "Not consistently present — parse a[href*='/models/'] if available",
+    "tags": "a[href*='/categories/'] or meta property='video:tag'",
+    "studio": "a[href*='/sites/']"
+  },
+  "selectors_or_parsing_notes": {
+    "scene_title": ["og:title", "h1.title"],
+    "date": ["meta[property='ya:ovs:upload_date']"],
+    "description": ["og:description"],
+    "cover_image": ["og:image"],
+    "performers": ["a[href*='/models/']"],
+    "tags": ["a[href*='/categories/']", "meta[property='video:tag']"],
+    "studio": ["a[href*='/sites/']"]},
+  "search_strategy": {
+    "supported": true,
+    "notes": "KVS search at /search/<query>/ — returns paginated HTML listing."
+  },
+  "fragment_matching_strategy": {
+    "supported": false,
+    "notes": "No filename-match endpoint confirmed."
+  },
+  "anti_bot_or_access_notes": [
+    "Cloudflare present but content accessible with standard browser headers.",
+    "Set Cookie: age_verified=1; kt_tc=1 to bypass age gate.",
+    "pageContext.langUrls confirms standard KVS route map.",
+    "Use conservative request delays."
+  ],
+  "known_limitations": [
+    "Model/performer links not visible on sampled scene pages — may not be populated for all content.",
+    "Cloudflare may tighten; implement fallback for 403/challenge responses.",
+    "Adult content — keep scraper metadata-only."
+  ],
+  "validation_examples": {
+    "scene_urls": [
+      "https://www.allboner.com/videos/89122/homoemo-deep-rides-and-explosive-orgasms-with-james-radford-and-kai-alexander/",
+      "https://www.allboner.com/videos/87214/gay-teens-fuck-each-other-in-the-little-ass-without-a-condom/"
+    ],
+    "performer_urls": [],
+    "search_queries": ["https://www.allboner.com/search/gay/"],
+    "fragments": []
+  },
+  "sources": [
+    "https://www.allboner.com",
+    "Perplexity live site inspection May 2026"
+  ]
+}
