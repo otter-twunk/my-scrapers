@@ -1,2 +1,4 @@
 __pycache__/
 .DS_Store
+build/stash-sync/*
+!build/stash-sync/README.md
