@@ -42,16 +42,16 @@ def find_scraper_script(site: str) -> Path:
 
 
 def scraper_interface_hint(script_path: Path) -> str:
-    source = script_path.read_text(encoding="utf-8", errors="ignore")
+    source = script_path.read_text(encoding="utf-8", errors="replace")
     return "argv" if "sys.argv[1]" in source else "stdin"
 
 
 def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     if args.input_json:
-        payload = json.loads(args.input_json)
-        if not isinstance(payload, dict):
+        parsed_input = json.loads(args.input_json)
+        if not isinstance(parsed_input, dict):
             raise ValueError("--input-json must decode to a JSON object")
-        return payload
+        return parsed_input
 
     payload: dict[str, Any] = {}
     if args.url:

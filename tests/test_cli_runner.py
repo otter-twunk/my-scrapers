@@ -23,7 +23,7 @@ def first_site_for_interface(interface: str) -> str:
         scripts = sorted(path for path in folder.glob("*.py") if "_vendor" not in path.parts)
         if not scripts:
             continue
-        source = scripts[0].read_text(encoding="utf-8", errors="ignore")
+        source = scripts[0].read_text(encoding="utf-8", errors="replace")
         detected = "argv" if "sys.argv[1]" in source else "stdin"
         if detected == interface:
             return folder.name
