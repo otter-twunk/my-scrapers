@@ -175,6 +175,33 @@ def extract_performer_names_from_html(html):
     return unique_names(strip_html(name) for name in names)
 
 
+def extract_scene_data_from_bootstrap(html):
+    match = re.search(r"video:\{(.*?)\},related:", html, flags=re.DOTALL)
+    if not match:
+        return [], []
+
+    video_section = match.group(1)
+    category_match = re.search(r"categories:\[(.*?)\],performers:\[", video_section, flags=re.DOTALL)
+    performer_match = re.search(r"performers:\[(.*?)\](?:,|$)", video_section, flags=re.DOTALL)
+
+    category_names = []
+    if category_match:
+        category_names = [
+            normalize_space(unescape(name))
+            for name in re.findall(r'name:"((?:[^"\\]|\\.)+)"', category_match.group(1))
+        ]
+
+    performer_names = []
+    if performer_match:
+        performer_names = [
+            normalize_space(unescape(name).replace('\\"', '"'))
+            for name in re.findall(r'name:"((?:[^"\\]|\\.)+)"', performer_match.group(1))
+        ]
+        performer_names = [name for name in performer_names if name and name.casefold() != "unknown"]
+
+    return category_names, performer_names
+
+
 def scrape_scene(url):
     html = fetch(url)
     blocks = load_json_ld_blocks(html)
@@ -189,9 +216,11 @@ def scrape_scene(url):
         elif isinstance(actor, str):
             actors.append(actor)
 
+    category_names, bootstrap_performers = extract_scene_data_from_bootstrap(html)
+
     performers = unique_names(actors)
-    if not performers:
-        performers = extract_performer_names_from_html(html)
+    if not performers and bootstrap_performers:
+        performers = unique_names(bootstrap_performers)
 
     image = video.get("thumbnailUrl")
     if isinstance(image, list):
@@ -204,7 +233,7 @@ def scrape_scene(url):
         "details": clean_details(video.get("description", "")),
         "image": image or "",
         "performers": performers,
-        "tags": extract_category_names(html),
+        "tags": unique_names(category_names) if category_names else extract_category_names(html),
     }
     return {key: value for key, value in scene.items() if value}
 

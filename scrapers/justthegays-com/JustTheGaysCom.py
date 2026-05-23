@@ -32,6 +32,10 @@ except Exception:
 PERFORMER_CACHE = {}
 
 
+def strip_legacy_suffix(slug):
+    return re.sub(r"-\d{6}$", "", slug or "")
+
+
 def read_stdin():
     raw = sys.stdin.read().strip()
     if not raw:
@@ -164,18 +168,20 @@ def extract_title_from_page(html):
 
 
 def slug_to_name(slug):
-    slug = re.sub(r"-052611$", "", slug)
+    slug = strip_legacy_suffix(slug)
     slug = slug.replace("_", " ")
     slug = re.sub(r"\s+", " ", slug.replace("-", " ")).strip()
     return slug.title()
 
 
 def performer_name_from_slug(slug):
-    slug = re.sub(r"-052611$", "", slug)
+    slug = normalize_space(slug)
+    if not slug:
+        return ""
     if slug in PERFORMER_CACHE:
         return PERFORMER_CACHE[slug]
 
-    url = f"{BASE_URL}/performers/{slug}-052611/"
+    url = f"{BASE_URL}/performers/{slug}/"
     try:
         html = fetch(url)
         name = extract_title_from_page(html)
@@ -191,8 +197,8 @@ def performer_name_from_slug(slug):
 
 
 def parse_article_classes(article_open_tag):
-    categories = re.findall(r"\bcategories-([a-z0-9_-]+-052611)\b", article_open_tag, flags=re.IGNORECASE)
-    performers = re.findall(r"\bvideo_tag-([a-z0-9_-]+-052611)\b", article_open_tag, flags=re.IGNORECASE)
+    categories = re.findall(r"\bcategories-([a-z0-9_-]+-\d{6})\b", article_open_tag, flags=re.IGNORECASE)
+    performers = re.findall(r"\bvideo_tag-([a-z0-9_-]+-\d{6})\b", article_open_tag, flags=re.IGNORECASE)
     return categories, performers
 
 
